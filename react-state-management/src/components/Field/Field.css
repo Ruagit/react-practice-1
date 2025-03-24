@@ -1,0 +1,25 @@
+.field {
+  padding: 0 20px;
+}
+
+.field__input {
+  height: 40px;
+  min-width: 250px;
+  padding: 0 15px;
+  background-color: #dadada;
+  border: none;
+  color: #000;
+}
+
+.field__input:hover {
+  background-color: #cccccc;
+}
+
+.field__input:active {
+  background-color: #dadada;
+}
+
+.field__error {
+  color: #e4624e;
+  padding: 10px 0;
+}

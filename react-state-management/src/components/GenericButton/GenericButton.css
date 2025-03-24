@@ -1,0 +1,24 @@
+.generic-button {
+  height: 40px;
+  padding: 0 15px;
+  font-weight: bold;
+  background-color: #7e6ec2;
+  color: white;
+  border: none;
+}
+
+.generic-button:hover {
+  background-color: #675a9e;
+  color: #fff5ce;
+  cursor: pointer;
+}
+
+.generic-button:active {
+  background-color: #8c8dc0;
+}
+
+.generic-button:disabled {
+  background-color: grey;
+  color: #fff5ce;
+  cursor: pointer;
+}
