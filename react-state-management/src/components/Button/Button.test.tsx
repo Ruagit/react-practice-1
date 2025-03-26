@@ -48,7 +48,7 @@ describe("Button Component", () => {
   it("renders children correctly", () => {
     render(
       <Button {...defaultProps}>
-        <span data-testid="child-element">Custom Content</span>
+        <span>Custom Content</span>
       </Button>
     );
 

@@ -27,7 +27,7 @@ export const ImageCard = ({
   // };
 
   return (
-    <div className="image-card" data-testId={id}>
+    <div className="image-card" data-id={id}>
       <div className="image-card__container">
         <img
           src={imageUrl}

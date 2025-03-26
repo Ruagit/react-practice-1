@@ -40,11 +40,6 @@ export const Field = ({
       component={CustomField}
       placeholder={placeholder}
     />
-    <ErrorMessage
-      data-testid="error"
-      name={name}
-      component="p"
-      className="field__error"
-    />
+    <ErrorMessage name={name} component="p" className="field__error" />
   </div>
 );

@@ -11,9 +11,6 @@ export const SearchResults = () => {
         width=""
         height=""
         favourited={false}
-        onClick={(id) => {
-          console.log(id);
-        }}
       />
     </div>
   );
