@@ -3,7 +3,6 @@ import { string as yString, object as yObject } from "yup";
 import { Field } from "../../../../components/Field";
 import { GenericButton } from "../../../../components/GenericButton";
 import { API_SEARCH_ENDPOINT } from "../../../../constants";
-import { debounce } from "../../../../utilities/debounce/debounce";
 import "./SearchForm.css";
 
 const searchFieldName = "search";
@@ -30,15 +29,13 @@ const searchAction = async ({ search, searchLimit = 12 }: SearchAction) => {
   }
 };
 
-const debouncedSearchAction = debounce(searchAction, 500, true);
-
 export const SearchForm = () => {
   return (
     <Formik
       initialValues={{ [searchFieldName]: "" }}
       validationSchema={SearchFormSchema}
       onSubmit={async ({ search }, { resetForm }) => {
-        await debouncedSearchAction({ search });
+        await searchAction({ search });
         resetForm();
       }}
     >
