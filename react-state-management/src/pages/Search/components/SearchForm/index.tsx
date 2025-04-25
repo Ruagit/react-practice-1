@@ -2,7 +2,8 @@ import { Formik, Form as FormikForm } from "formik";
 import { string as yString, object as yObject } from "yup";
 import { Field } from "../../../../components/Field";
 import { GenericButton } from "../../../../components/GenericButton";
-import { API_SEARCH_ENDPOINT } from "../../../../constants";
+import { ImageState } from "../../../../types";
+import { searchAction } from "../../../../api/search";
 import "./SearchForm.css";
 
 const searchFieldName = "search";
@@ -13,30 +14,23 @@ const SearchFormSchema = yObject().shape({
     .required("Required"),
 });
 
-interface SearchAction {
-  search: string;
-  searchLimit?: Number;
+interface SearchFormProps {
+  saveImages(images: ImageState): ImageState;
 }
 
-const searchAction = async ({ search, searchLimit = 12 }: SearchAction) => {
-  const params = `q=${search}&limit=${searchLimit}&offset=0`;
-  try {
-    const response = await fetch(`${API_SEARCH_ENDPOINT}&${params}`);
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    return err;
-  }
-};
-
-export const SearchForm = () => {
+export const SearchForm = ({ saveImages }: SearchFormProps) => {
   return (
     <Formik
       initialValues={{ [searchFieldName]: "" }}
       validationSchema={SearchFormSchema}
       onSubmit={async ({ search }, { resetForm }) => {
-        await searchAction({ search });
-        resetForm();
+        const data = await searchAction({ search });
+        if (!(data instanceof Error)) {
+          saveImages(data);
+          resetForm();
+        } else {
+          console.error("Error:", data);
+        }
       }}
     >
       {({ isValid, dirty, isSubmitting, handleSubmit }) => (

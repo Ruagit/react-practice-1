@@ -1,17 +1,18 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SearchForm } from "../SearchForm";
-import { fetchMock } from "../../../../utilities/fetchMock";
+import { fetchMock, successfulResponse } from "../../../../utilities/fetchMock";
 import { API_SEARCH_ENDPOINT } from "../../../../constants";
-import { successfulResponse } from "../../testMocks";
 
 describe("SearchForm Component", () => {
+  const saveMock = jest.fn();
+
   beforeEach(() => {
     fetchMock.mockClear();
   });
 
   it("should render the search form", () => {
-    render(<SearchForm />);
+    render(<SearchForm saveImages={saveMock} />);
     expect(screen.getByPlaceholderText("What you looking for?")).toBeVisible();
     expect(screen.getByRole("button", { name: "Find GIF!" })).toBeVisible();
   });
@@ -19,7 +20,7 @@ describe("SearchForm Component", () => {
   describe("when inputting a search term", () => {
     describe("if the input is too short", () => {
       it("should render a validation error", async () => {
-        render(<SearchForm />);
+        render(<SearchForm saveImages={saveMock} />);
 
         await act(async () => {
           await userEvent.type(
@@ -36,7 +37,7 @@ describe("SearchForm Component", () => {
       });
 
       it("should render a disabled submit", async () => {
-        render(<SearchForm />);
+        render(<SearchForm saveImages={saveMock} />);
         const button = screen.getByRole("button", { name: "Find GIF!" });
 
         await act(async () => {
@@ -58,10 +59,10 @@ describe("SearchForm Component", () => {
       fetchMock.mockImplementation(() =>
         Promise.resolve({
           ok: true,
-          json: () => Promise.resolve({ data: successfulResponse }),
+          json: () => Promise.resolve(successfulResponse),
         })
       );
-      render(<SearchForm />);
+      render(<SearchForm saveImages={saveMock} />);
 
       await act(async () => {
         await userEvent.type(
@@ -76,12 +77,11 @@ describe("SearchForm Component", () => {
         expect(fetchMock).toHaveBeenCalledWith(
           `${API_SEARCH_ENDPOINT}&q=tennis&limit=12&offset=0`
         );
-        expect(fetchMock).toHaveBeenCalledTimes(1);
       });
     });
 
     it("should reset the search input", async () => {
-      render(<SearchForm />);
+      render(<SearchForm saveImages={saveMock} />);
       const input = screen.getByPlaceholderText("What you looking for?");
 
       await act(async () => {

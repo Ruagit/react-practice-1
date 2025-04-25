@@ -1,4 +1,4 @@
-// import { FavouriteButton } from "../FavouriteButton";
+import { FavouriteButton } from "../FavouriteButton";
 import type { FavouriteProps } from "../FavouriteButton";
 import "./ImageCard.css";
 
@@ -10,7 +10,7 @@ interface ImageCardProps extends FavouriteProps {
   imageUrl: string;
   width: string;
   height: string;
-  // onClick(id: ImageCardId): void;
+  onClick(id: ImageCardId): void;
 }
 
 export const ImageCard = ({
@@ -19,12 +19,12 @@ export const ImageCard = ({
   imageUrl,
   width,
   height,
-  // onClick,
-  // favourited,
+  favourited = false,
+  onClick,
 }: ImageCardProps) => {
-  // const handleClick = () => {
-  //   onClick(id);
-  // };
+  const handleClick = () => {
+    onClick(id);
+  };
 
   return (
     <div className="image-card" data-id={id}>
@@ -37,7 +37,7 @@ export const ImageCard = ({
           className="image-card__image"
         />
       </div>
-      {/* <FavouriteButton favourited={favourited} onClick={handleClick} /> */}
+      <FavouriteButton favourited={favourited} onClick={handleClick} />
     </div>
   );
 };

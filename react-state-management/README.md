@@ -2,14 +2,9 @@
 
 ## Task
 
-- Populate `<SearchResults>` from the API response triggered in the `<SearchForm>`
-- Make the "should render search results" unit test pass for `./Search.test.tsx`
-
-## Extension
-
-- Uncomment code in `<ImageCard>` — you should see a favourite button over each image!
-- Add a favourite capability to the application utilising existing components
-- Make the "should update favourite button" unit test pass for `./Search.test.tsx`
+- Each `<ImageCard>` component has a `<FavouriteButton>` component
+- Add a "favourite capability" to the application utilising existing components
+- Clicking on the `<FavouriteButton>` should mean the image is loaded into the `<FavouritesPage>` component
 
 ## Features
 
