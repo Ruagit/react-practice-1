@@ -7,20 +7,26 @@ class TopIdOptimizedWindow {
         this.windowSize = windowSize;
     }
     processEvent(event) {
+        const filteredEvents = [];
         const lowerBound = event.timestamp - this.windowSize;
-        this.events = this.events.filter((e) => e.timestamp >= lowerBound);
-        this.events.push(event);
-        const eventsInWindow = this.events;
+        //this.events = this.events.filter((e) => e.timestamp >= lowerBound);
+        for (const oneEvent of this.events) {
+            if (event.timestamp >= lowerBound) {
+                filteredEvents.push(oneEvent);
+            }
+        }
+        filteredEvents.push(event);
+        const eventsInWindow = filteredEvents;
         const count = {};
         for (const e of eventsInWindow) {
             count[e.id] = (count[e.id] || 0) + 1;
         }
         let topId = "";
         let maxCount = 0;
-        for (const [id, c] of Object.entries(count)) {
-            if (c > maxCount || (c === maxCount && id < topId)) {
-                topId = id;
-                maxCount = c;
+        for (const item in count) {
+            if (count[item] > maxCount || (count[item] === maxCount && item < topId)) {
+                topId = item;
+                maxCount = count[item];
             }
         }
         // console.log(`At ${event.timestamp} → Top ID: ${topId} (${maxCount}x)`);

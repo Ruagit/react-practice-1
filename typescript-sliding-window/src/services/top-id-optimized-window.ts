@@ -11,24 +11,34 @@ export class TopIdOptimizedWindow {
   }
 
   public processEvent(event: Event): void {
+    const filteredEvents: Event[] = [];
     const lowerBound = event.timestamp - this.windowSize;
-    this.events = this.events.filter((e) => e.timestamp >= lowerBound);
 
-    this.events.push(event);
+    //this.events = this.events.filter((e) => e.timestamp >= lowerBound);
 
-    const eventsInWindow = this.events;
+    for (const oneEvent of this.events) {
+      if(event.timestamp >= lowerBound) {
+        filteredEvents.push(oneEvent);
+      }
+    }
+
+    filteredEvents.push(event);
+
+    const eventsInWindow = filteredEvents;
 
     const count: Record<string, number> = {};
+
     for (const e of eventsInWindow) {
       count[e.id] = (count[e.id] || 0) + 1;
     }
 
     let topId = "";
     let maxCount = 0;
-    for (const [id, c] of Object.entries(count)) {
-      if (c > maxCount || (c === maxCount && id < topId)) {
-        topId = id;
-        maxCount = c;
+
+    for (const item in count) {
+      if (count[item] > maxCount || (count[item] === maxCount && item < topId)) {
+        topId = item;
+        maxCount = count[item];
       }
     }
 
