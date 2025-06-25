@@ -24,6 +24,7 @@ export const searchAction = async ({
           imageUrl: image.url,
           width: image.width,
           height: image.height,
+          // favourited: false, // Default to false, can be updated later
         };
       });
 

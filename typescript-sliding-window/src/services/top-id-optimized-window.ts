@@ -4,17 +4,19 @@ export class TopIdOptimizedWindow {
   // Currently there is a copy of naive implementation from top-id-naive-window.ts
   // The goal of the task is to optimize the naive implementation
   private readonly windowSize: number;
-  private readonly events: Event[] = [];
+  private events: Event[] = [];
 
   constructor(windowSize: number = 300) {
     this.windowSize = windowSize;
   }
 
   public processEvent(event: Event): void {
+    const lowerBound = event.timestamp - this.windowSize;
+    this.events = this.events.filter((e) => e.timestamp >= lowerBound);
+
     this.events.push(event);
 
-    const lowerBound = event.timestamp - this.windowSize;
-    const eventsInWindow = this.events.filter((e) => e.timestamp >= lowerBound);
+    const eventsInWindow = this.events;
 
     const count: Record<string, number> = {};
     for (const e of eventsInWindow) {

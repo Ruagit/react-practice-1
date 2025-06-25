@@ -1,9 +1,10 @@
 import { Formik, Form as FormikForm } from "formik";
-import { string as yString, object as yObject } from "yup";
+import { useContext } from "react";
+import { object as yObject, string as yString } from "yup";
+import { searchAction } from "../../../../api/search";
 import { Field } from "../../../../components/Field";
 import { GenericButton } from "../../../../components/GenericButton";
-import { ImageState } from "../../../../types";
-import { searchAction } from "../../../../api/search";
+import { ImageContext } from "../../../../hooks/imageContext";
 import "./SearchForm.css";
 
 const searchFieldName = "search";
@@ -14,11 +15,12 @@ const SearchFormSchema = yObject().shape({
     .required("Required"),
 });
 
-interface SearchFormProps {
-  saveImages(images: ImageState): ImageState;
-}
+// interface SearchFormProps {
+//   saveImages(images: ImageState): ImageState;
+// }
 
-export const SearchForm = ({ saveImages }: SearchFormProps) => {
+export const SearchForm: React.FC = () => {
+  const { setImages } = useContext(ImageContext);
   return (
     <Formik
       initialValues={{ [searchFieldName]: "" }}
@@ -26,7 +28,7 @@ export const SearchForm = ({ saveImages }: SearchFormProps) => {
       onSubmit={async ({ search }, { resetForm }) => {
         const data = await searchAction({ search });
         if (!(data instanceof Error)) {
-          saveImages(data);
+          setImages(data);
           resetForm();
         } else {
           console.error("Error:", data);
